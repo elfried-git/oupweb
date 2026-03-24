@@ -5,8 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Bell, Info, CheckCircle, AlertTriangle, XCircle, X } from 'lucide-react';
-import { useLanguageStore } from '@/stores/language-store';
-import { translations, translateNotification } from '@/locales/translations';
+import { useTranslation } from '@/hooks/use-translation';
+import { translateNotification } from '@/locales/translations';
 import type { Notification } from '@/types';
 
 interface NotificationsPanelProps {
@@ -47,8 +47,7 @@ export const NotificationsPanel = memo(function NotificationsPanel({
   onMarkAsRead, 
   onClearAll 
 }: NotificationsPanelProps) {
-  const { language } = useLanguageStore();
-  const t = translations[language];
+  const { t } = useTranslation();
   
   const unreadCount = useMemo(() => 
     notifications.filter(n => !n.isRead).length,
@@ -60,8 +59,8 @@ export const NotificationsPanel = memo(function NotificationsPanel({
   }, [onMarkAsRead]);
 
   const getTranslatedNotification = useCallback((notification: Notification) => {
-    return translateNotification(notification, language);
-  }, [language]);
+    return translateNotification(notification);
+  }, []);
 
   return (
     <Card 

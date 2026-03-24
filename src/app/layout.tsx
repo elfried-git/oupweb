@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
-import { ThemeProvider } from "@/components/theme/theme-provider";
+import { Providers } from "@/components/providers/language-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,19 +36,44 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="dark" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                document.documentElement.classList.add('dark');
+                document.documentElement.style.backgroundColor = '#0F172A';
+              })();
+            `,
+          }}
+        />
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              html {
+                background-color: #0F172A !important;
+              }
+              html, body {
+                background: 
+                  radial-gradient(ellipse 100% 80% at 50% -30%, rgba(255, 122, 92, 0.08), transparent),
+                  radial-gradient(ellipse 80% 60% at 100% 100%, rgba(56, 189, 248, 0.05), transparent),
+                  radial-gradient(ellipse 60% 50% at 0% 80%, rgba(52, 211, 153, 0.05), transparent),
+                  linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0F172A 100%) !important;
+                background-attachment: fixed !important;
+                color-scheme: dark;
+              }
+            `,
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <Providers>
           {children}
-          <Toaster position="top-right" richColors closeButton />
-        </ThemeProvider>
+        </Providers>
+        <Toaster position="top-right" richColors closeButton />
       </body>
     </html>
   );

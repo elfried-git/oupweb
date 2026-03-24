@@ -45,45 +45,6 @@
 
 :root {
   --radius: 1rem;
-  /* Warm cream background for a friendly feel */
-  --background: #FDF8F3;
-  --foreground: #1C1917;
-  --card: #FFFFFF;
-  --card-foreground: #1C1917;
-  --popover: #FFFFFF;
-  --popover-foreground: #1C1917;
-  /* Vibrant coral/orange primary */
-  --primary: #FF6B4A;
-  --primary-foreground: #FFFFFF;
-  /* Soft teal secondary */
-  --secondary: #E8F4F2;
-  --secondary-foreground: #0D7377;
-  --muted: #F5F0EB;
-  --muted-foreground: #78716C;
-  /* Bright yellow accent */
-  --accent: #FEF3C7;
-  --accent-foreground: #B45309;
-  --destructive: #EF4444;
-  --border: #E7E5E4;
-  --input: #E7E5E4;
-  --ring: #FF6B4A;
-  /* Fun chart colors */
-  --chart-1: #FF6B4A;
-  --chart-2: #0EA5E9;
-  --chart-3: #10B981;
-  --chart-4: #F59E0B;
-  --chart-5: #8B5CF6;
-  --sidebar: #FFFFFF;
-  --sidebar-foreground: #1C1917;
-  --sidebar-primary: #FF6B4A;
-  --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #FEF3C7;
-  --sidebar-accent-foreground: #B45309;
-  --sidebar-border: #E7E5E4;
-  --sidebar-ring: #FF6B4A;
-}
-
-.dark {
   /* Deep midnight blue for dark mode */
   --background: #0F172A;
   --foreground: #F8FAFC;
@@ -129,19 +90,35 @@
   }
 }
 
+/* Global background styling - Dark mode only */
+html {
+  min-height: 100%;
+}
+
+body {
+  background: 
+    radial-gradient(ellipse 100% 80% at 50% -30%, rgba(255, 122, 92, 0.08), transparent),
+    radial-gradient(ellipse 80% 60% at 100% 100%, rgba(56, 189, 248, 0.05), transparent),
+    radial-gradient(ellipse 60% 50% at 0% 80%, rgba(52, 211, 153, 0.05), transparent),
+    linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0F172A 100%);
+  background-attachment: fixed;
+}
+
 /* Fun card style - rounded with subtle shadow */
 .fun-card {
-  @apply rounded-2xl bg-card border border-border/50 shadow-sm transition-all duration-200;
-  box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.08);
+  @apply rounded-2xl bg-card border border-border/50 transition-all duration-200;
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 122, 92, 0.05);
 }
 
 .fun-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px -4px rgba(255, 107, 74, 0.15);
-}
-
-.dark .fun-card:hover {
-  box-shadow: 0 8px 30px -4px rgba(255, 122, 92, 0.2);
+  box-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.3),
+    0 12px 24px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 122, 92, 0.1);
 }
 
 /* Gradient text */
@@ -222,15 +199,15 @@
 
 /* Status badges with personality */
 .status-todo {
-  @apply bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300;
+  @apply bg-slate-800 text-slate-300;
 }
 
 .status-progress {
-  @apply bg-sky-100 text-sky-700 dark:bg-sky-900/50 dark:text-sky-300;
+  @apply bg-sky-900/50 text-sky-300;
 }
 
 .status-done {
-  @apply bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300;
+  @apply bg-emerald-900/50 text-emerald-300;
 }
 
 /* Priority indicators */
@@ -356,4 +333,30 @@
 
 .animate-page-enter {
   animation: page-enter 0.5s ease-out forwards;
+}
+
+/* Form inputs - ensure visibility in dark mode */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="url"],
+input[type="search"],
+textarea,
+select {
+  background-color: #334155 !important;
+  color: #F8FAFC !important;
+  border-color: #475569 !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #94A3B8 !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #FF7A5C !important;
+  box-shadow: 0 0 0 3px rgba(255, 122, 92, 0.2) !important;
 }

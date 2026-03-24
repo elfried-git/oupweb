@@ -36,8 +36,8 @@ import {
   Trash2,
 } from 'lucide-react';
 import { PackageIcon } from '@/components/icons/custom-icons';
-import { useLanguageStore } from '@/stores/language-store';
-import { translations, translateProduct } from '@/locales/translations';
+import { useTranslation } from '@/hooks/use-translation';
+import { translateProduct } from '@/locales/translations';
 import { ProductsTableSkeleton } from '@/components/skeletons/loading-skeletons';
 import type { Product } from '@/types';
 
@@ -56,8 +56,7 @@ export const ProductsTable = memo(function ProductsTable({
   onAdd, 
   isLoading 
 }: ProductsTableProps) {
-  const { language } = useLanguageStore();
-  const t = translations[language];
+  const { t } = useTranslation();
   
   const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
@@ -70,8 +69,8 @@ export const ProductsTable = memo(function ProductsTable({
   );
 
   const getTranslatedProduct = useCallback((product: Product) => {
-    return translateProduct(product, language);
-  }, [language]);
+    return translateProduct(product);
+  }, []);
 
   const filteredProducts = useMemo(() => {
     return products
@@ -177,7 +176,7 @@ export const ProductsTable = memo(function ProductsTable({
                 {t.product.allCategories}
               </SelectItem>
               {categories.map(cat => {
-                const translatedCategory = translateProduct({ name: '', description: '', category: cat }, language).category;
+                const translatedCategory = translateProduct({ name: '', description: '', category: cat }).category;
                 return (
                   <SelectItem 
                     key={cat} 
@@ -322,7 +321,7 @@ export const ProductsTable = memo(function ProductsTable({
                               <Button 
                                 variant="ghost" 
                                 size="sm" 
-                                className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity" 
+                                className="h-8 w-8 p-0" 
                                 data-testid={`product-actions-button-${product.id}`}
                                 data-product-id={product.id}
                                 aria-label={`Actions for ${translated.name}`}

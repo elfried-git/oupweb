@@ -1,0 +1,9 @@
+[pdf-service] Installing dependencies...
+bun install v1.3.10 (30e609e0)
+No packages! Deleted empty lockfile
+
+[1.00ms] done
+[pdf-service] Running bun run dev...
+$ bun --hot index.ts
+error: Module not found "index.ts"
+error: script "dev" exited with code 1

@@ -4,8 +4,8 @@ import { memo, useMemo, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { BarChart3, TrendingUp, PieChart } from 'lucide-react';
-import { useLanguageStore } from '@/stores/language-store';
-import { translations, translateProduct } from '@/locales/translations';
+import { useTranslation } from '@/hooks/use-translation';
+import { translateProduct } from '@/locales/translations';
 import type { Product, Task } from '@/types';
 
 interface ChartsSectionProps {
@@ -14,12 +14,11 @@ interface ChartsSectionProps {
 }
 
 export const ChartsSection = memo(function ChartsSection({ products, tasks }: ChartsSectionProps) {
-  const { language } = useLanguageStore();
-  const t = translations[language];
+  const { t } = useTranslation();
 
   const getTranslatedCategory = useCallback((category: string) => {
-    return translateProduct({ name: '', description: '', category }, language).category;
-  }, [language]);
+    return translateProduct({ name: '', description: '', category }).category;
+  }, []);
 
   const categoryCount = useMemo(() => 
     products.reduce((acc, p) => {

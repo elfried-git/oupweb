@@ -161,6 +161,13 @@ export const translations = {
       notifications: 'Notifications',
       notificationsDesc: 'Notifications non lues',
       fromLastMonth: 'depuis le mois dernier',
+      editTrend: 'Modifier la tendance',
+      editTrendDesc: 'Modifiez la valeur et la direction de la tendance',
+      trendValue: 'Valeur',
+      trendDirection: 'Direction',
+      trendUp: 'En hausse',
+      trendDown: 'En baisse',
+      trendNeutral: 'Stable',
     },
     notificationTypes: {
       info: 'Information',
@@ -517,6 +524,13 @@ export const translations = {
       notifications: 'Notifications',
       notificationsDesc: 'Unread notifications',
       fromLastMonth: 'from last month',
+      editTrend: 'Edit Trend',
+      editTrendDesc: 'Modify the trend value and direction',
+      trendValue: 'Value',
+      trendDirection: 'Direction',
+      trendUp: 'Up',
+      trendDown: 'Down',
+      trendNeutral: 'Neutral',
     },
     notificationTypes: {
       info: 'Information',
@@ -713,8 +727,9 @@ export const translations = {
   },
 };
 
-export function translateProduct(product: { name: string; description: string | null; category: string }, language: 'fr' | 'en'): { name: string; description: string; category: string } {
-  const seedData = translations[language].seedData;
+// French-only translation functions (language switching removed)
+export function translateProduct(product: { name: string; description: string | null; category: string }): { name: string; description: string; category: string } {
+  const seedData = translations.fr.seedData;
   return {
     name: seedData.products[product.name as keyof typeof seedData.products] || product.name,
     description: product.description ? (seedData.productDescriptions[product.description as keyof typeof seedData.productDescriptions] || product.description) : '',
@@ -722,16 +737,16 @@ export function translateProduct(product: { name: string; description: string | 
   };
 }
 
-export function translateTask(task: { title: string; description: string | null }, language: 'fr' | 'en'): { title: string; description: string } {
-  const seedData = translations[language].seedData;
+export function translateTask(task: { title: string; description: string | null }): { title: string; description: string } {
+  const seedData = translations.fr.seedData;
   return {
     title: seedData.tasks[task.title as keyof typeof seedData.tasks] || task.title,
     description: task.description ? (seedData.taskDescriptions[task.description as keyof typeof seedData.taskDescriptions] || task.description) : '',
   };
 }
 
-export function translateNotification(notification: { title: string; message: string }, language: 'fr' | 'en'): { title: string; message: string } {
-  const seedData = translations[language].seedData;
+export function translateNotification(notification: { title: string; message: string }): { title: string; message: string } {
+  const seedData = translations.fr.seedData;
   return {
     title: seedData.notifications.titles[notification.title as keyof typeof seedData.notifications.titles] || notification.title,
     message: seedData.notifications.messages[notification.message as keyof typeof seedData.notifications.messages] || notification.message,

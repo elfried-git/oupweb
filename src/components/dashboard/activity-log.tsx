@@ -4,8 +4,7 @@ import { memo, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { User, LogIn, LogOut, Edit, Plus, Trash2, Activity } from 'lucide-react';
-import { useLanguageStore } from '@/stores/language-store';
-import { translations } from '@/locales/translations';
+import { useTranslation } from '@/hooks/use-translation';
 import type { ActivityLog } from '@/types';
 
 interface ActivityLogProps {
@@ -30,8 +29,7 @@ const actionColors: Record<string, string> = {
 };
 
 export const ActivityLog = memo(function ActivityLog({ activities }: ActivityLogProps) {
-  const { language } = useLanguageStore();
-  const t = translations[language];
+  const { t } = useTranslation();
 
   const translatedActivities = useMemo(() => 
     activities.map(activity => ({

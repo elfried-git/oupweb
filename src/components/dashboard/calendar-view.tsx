@@ -1,8 +1,7 @@
 'use client';
 
 import { useState, useMemo, useCallback } from 'react';
-import { useLanguageStore } from '@/stores/language-store';
-import { translations } from '@/locales/translations';
+import { useTranslation } from '@/hooks/use-translation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -45,36 +44,36 @@ export function CalendarView({
   onDeleteEvent,
   isLoading = false,
 }: CalendarViewProps) {
-  const { language } = useLanguageStore();
-  const t = translations[language].calendar;
+  const { t } = useTranslation();
+  const tc = t.calendar;
   
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   
   const weekdays = useMemo(() => [
-    t.weekdays.sunday,
-    t.weekdays.monday,
-    t.weekdays.tuesday,
-    t.weekdays.wednesday,
-    t.weekdays.thursday,
-    t.weekdays.friday,
-    t.weekdays.saturday,
-  ], [t.weekdays]);
+    tc.weekdays.sunday,
+    tc.weekdays.monday,
+    tc.weekdays.tuesday,
+    tc.weekdays.wednesday,
+    tc.weekdays.thursday,
+    tc.weekdays.friday,
+    tc.weekdays.saturday,
+  ], [tc.weekdays]);
   
   const months = useMemo(() => [
-    t.months.january,
-    t.months.february,
-    t.months.march,
-    t.months.april,
-    t.months.may,
-    t.months.june,
-    t.months.july,
-    t.months.august,
-    t.months.september,
-    t.months.october,
-    t.months.november,
-    t.months.december,
-  ], [t.months]);
+    tc.months.january,
+    tc.months.february,
+    tc.months.march,
+    tc.months.april,
+    tc.months.may,
+    tc.months.june,
+    tc.months.july,
+    tc.months.august,
+    tc.months.september,
+    tc.months.october,
+    tc.months.november,
+    tc.months.december,
+  ], [tc.months]);
   
   const getDaysInMonth = useCallback((date: Date) => {
     const year = date.getFullYear();
@@ -177,7 +176,7 @@ export function CalendarView({
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="flex items-center gap-2">
           <CalendarIcon className="h-5 w-5 text-primary" />
-          <h2 data-testid="calendar-title" className="text-xl font-semibold">{t.title}</h2>
+          <h2 data-testid="calendar-title" className="text-xl font-semibold">{tc.title}</h2>
         </div>
         
         <div className="flex items-center gap-2 w-full sm:w-auto">
@@ -188,7 +187,7 @@ export function CalendarView({
             data-testid="calendar-today-button"
             className="rounded-xl"
           >
-            {t.today}
+            {tc.today}
           </Button>
           
           <div className="flex items-center gap-1">
@@ -197,7 +196,7 @@ export function CalendarView({
               size="icon"
               onClick={goToPreviousMonth}
               data-testid="calendar-prev-month"
-              aria-label={t.previousMonth}
+              aria-label={tc.previousMonth}
               className="rounded-xl"
             >
               <ChevronLeft className="h-4 w-4" />
@@ -212,7 +211,7 @@ export function CalendarView({
               size="icon"
               onClick={goToNextMonth}
               data-testid="calendar-next-month"
-              aria-label={t.nextMonth}
+              aria-label={tc.nextMonth}
               className="rounded-xl"
             >
               <ChevronRight className="h-4 w-4" />
@@ -225,7 +224,7 @@ export function CalendarView({
             className="rounded-xl ml-auto sm:ml-2"
           >
             <Plus className="h-4 w-4 mr-1" />
-            {t.addEvent}
+            {tc.addEvent}
           </Button>
         </div>
       </div>
@@ -315,7 +314,7 @@ export function CalendarView({
                 {selectedDate ? (
                   `${selectedDate.getDate()} ${months[selectedDate.getMonth()]} ${selectedDate.getFullYear()}`
                 ) : (
-                  t.eventDetails
+                  tc.eventDetails
                 )}
               </span>
               {selectedDate && (
@@ -333,9 +332,9 @@ export function CalendarView({
           </CardHeader>
           <CardContent className="space-y-3">
             {!selectedDate ? (
-              <p className="text-sm text-muted-foreground">{t.noEvents}</p>
+              <p className="text-sm text-muted-foreground">{tc.noEvents}</p>
             ) : selectedDateEvents.length === 0 && selectedDateTasks.length === 0 ? (
-              <p className="text-sm text-muted-foreground">{t.noEventsDay}</p>
+              <p className="text-sm text-muted-foreground">{tc.noEventsDay}</p>
             ) : (
               <div className="space-y-3 max-h-80 overflow-y-auto">
                 {selectedDateEvents.map(event => (
@@ -357,7 +356,7 @@ export function CalendarView({
                           data-testid={`edit-event-${event.id}`}
                           className="h-7 px-2 rounded-lg text-xs"
                         >
-                          {translations[language].common.edit}
+                          {t.common.edit}
                         </Button>
                         <Button
                           variant="ghost"
@@ -366,7 +365,7 @@ export function CalendarView({
                           data-testid={`delete-event-${event.id}`}
                           className="h-7 px-2 rounded-lg text-xs text-destructive hover:text-destructive"
                         >
-                          {translations[language].common.delete}
+                          {t.common.delete}
                         </Button>
                       </div>
                     </div>
@@ -375,14 +374,14 @@ export function CalendarView({
                     )}
                     <div className="flex items-center gap-2 text-xs text-muted-foreground">
                       {event.allDay ? (
-                        <Badge variant="secondary" className="text-xs rounded-lg">{t.allDay}</Badge>
+                        <Badge variant="secondary" className="text-xs rounded-lg">{tc.allDay}</Badge>
                       ) : (
                         <>
-                          <span>{new Date(event.startDate).toLocaleTimeString(language, { hour: '2-digit', minute: '2-digit' })}</span>
+                          <span>{new Date(event.startDate).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</span>
                           {event.endDate && (
                             <>
                               <span>-</span>
-                              <span>{new Date(event.endDate).toLocaleTimeString(language, { hour: '2-digit', minute: '2-digit' })}</span>
+                              <span>{new Date(event.endDate).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</span>
                             </>
                           )}
                         </>
@@ -393,7 +392,7 @@ export function CalendarView({
                 
                 {selectedDateTasks.length > 0 && (
                   <>
-                    <div className="text-xs font-medium text-muted-foreground mt-2">{t.tasks}</div>
+                    <div className="text-xs font-medium text-muted-foreground mt-2">{tc.tasks}</div>
                     {selectedDateTasks.map(task => (
                       <div
                         key={task.id}
@@ -405,7 +404,7 @@ export function CalendarView({
                           <span className="font-medium text-sm">{task.title}</span>
                         </div>
                         <Badge variant="outline" className="text-xs rounded-lg">
-                          {t.taskStatus[task.status as keyof typeof t.taskStatus] || task.status}
+                          {tc.taskStatus[task.status as keyof typeof tc.taskStatus] || task.status}
                         </Badge>
                       </div>
                     ))}

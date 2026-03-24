@@ -45,8 +45,7 @@ import {
   CheckCircle,
   XCircle,
 } from 'lucide-react';
-import { useLanguageStore } from '@/stores/language-store';
-import { translations } from '@/locales/translations';
+import { useTranslation } from '@/hooks/use-translation';
 import type { User } from '@/stores/auth-store';
 
 interface UsersTableProps {
@@ -74,8 +73,7 @@ export const UsersTable = memo(function UsersTable({
   onChangeRole,
   isLoading 
 }: UsersTableProps) {
-  const { language } = useLanguageStore();
-  const t = translations[language];
+  const { t } = useTranslation();
   
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState<string>('all');
@@ -134,7 +132,7 @@ export const UsersTable = memo(function UsersTable({
     return (
       <Card className="fun-card" data-testid="users-table-card">
         <CardContent className="py-12 text-center text-muted-foreground">
-          {language === 'fr' ? 'Chargement...' : 'Loading...'}
+          Chargement...
         </CardContent>
       </Card>
     );
@@ -315,7 +313,7 @@ export const UsersTable = memo(function UsersTable({
                             <Button 
                               variant="ghost" 
                               size="sm" 
-                              className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity" 
+                              className="h-8 w-8 p-0" 
                               data-testid={`user-actions-button-${user.id}`}
                               data-user-id={user.id}
                               aria-label={`Actions for ${user.name}`}

@@ -2,8 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useAuthStore } from '@/stores/auth-store';
-import { useLanguageStore } from '@/stores/language-store';
-import { translations } from '@/locales/translations';
+import { useTranslation } from '@/hooks/use-translation';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -39,24 +38,17 @@ import { TaskFormModal } from '@/components/dashboard/task-form-modal';
 import { UserFormModal } from '@/components/dashboard/user-form-modal';
 import { EventFormModal } from '@/components/dashboard/event-form-modal';
 import { ProfileModal } from '@/components/dashboard/profile-modal';
-import { ThemeToggle } from '@/components/theme/theme-toggle';
-import { LanguageToggle } from '@/components/language/language-toggle';
 import { QuickActions } from '@/components/dashboard/quick-actions';
 import { ChartsSection } from '@/components/dashboard/charts-section';
 import { DashboardSkeleton } from '@/components/skeletons/loading-skeletons';
-import {
-  RefreshIcon,
-  UserIcon,
-  LogoutIcon,
-} from '@/components/icons/custom-icons';
+import { UserIcon } from '@/components/icons/custom-icons';
 import type { Product, Task, Notification as NotificationType, ActivityLog as ActivityLogType, Event as EventType } from '@/types';
 import type { User as UserType } from '@/stores/auth-store';
 
 export function DashboardView() {
   const router = useRouter();
   const { user, isAuthenticated, logout, login } = useAuthStore();
-  const { language } = useLanguageStore();
-  const t = translations[language];
+  const { t } = useTranslation();
   
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState<Product[]>([]);
@@ -84,21 +76,20 @@ export function DashboardView() {
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
-      const [productsRes, tasksRes, notificationsRes, activitiesRes, usersRes, eventsRes] = await Promise.all([
-        fetch('/api/products'),
-        fetch('/api/tasks'),
-        fetch('/api/notifications'),
-        fetch('/api/activities'),
-        fetch('/api/users'),
-        fetch('/api/events'),
-      ]);
+      // Single API call to fetch all dashboard data
+      const response = await fetch('/api/dashboard-data');
       
-      if (productsRes.ok) setProducts(await productsRes.json());
-      if (tasksRes.ok) setTasks(await tasksRes.json());
-      if (notificationsRes.ok) setNotifications(await notificationsRes.json());
-      if (activitiesRes.ok) setActivities(await activitiesRes.json());
-      if (usersRes.ok) setUsers(await usersRes.json());
-      if (eventsRes.ok) setEvents(await eventsRes.json());
+      if (response.ok) {
+        const data = await response.json();
+        setProducts(data.products || []);
+        setTasks(data.tasks || []);
+        setNotifications(data.notifications || []);
+        setActivities(data.activities || []);
+        setUsers(data.users || []);
+        setEvents(data.events || []);
+      } else {
+        toast.error(t.toast.dataLoadFailed);
+      }
     } catch {
       toast.error(t.toast.dataLoadFailed);
     } finally {
@@ -425,30 +416,17 @@ export function DashboardView() {
   }
   
   return (
-    <div data-testid="dashboard-page" className="min-h-screen bg-background">
-      <header data-testid="dashboard-header" className="sticky top-0 z-[100] bg-background/95 backdrop-blur-md border-b border-border/50 shadow-sm">
+    <div data-testid="dashboard-page" className="min-h-screen relative">
+      {/* Subtle grid pattern overlay */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:32px_32px]" />
+      
+      <header data-testid="dashboard-header" className="sticky top-0 z-[100] bg-background/80 backdrop-blur-xl border-b border-border/50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div data-testid="dashboard-logo-section" className="flex items-center gap-3">
             <h1 data-testid="dashboard-title" className="font-bold text-xl gradient-text">Oupweb</h1>
           </div>
           
-          <div data-testid="dashboard-header-actions" className="flex items-center gap-1">
-            <LanguageToggle />
-            <ThemeToggle />
-            
-            <Button 
-              variant="ghost" 
-              size="icon"
-              onClick={fetchData}
-              disabled={isLoading}
-              data-testid="refresh-data-button"
-              data-loading={isLoading}
-              aria-label="Refresh data"
-              className="ml-1"
-            >
-              <RefreshIcon size={20} className={isLoading ? 'animate-spin' : ''} />
-            </Button>
-            
+          <div data-testid="dashboard-header-actions" className="flex items-center gap-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button 
@@ -502,7 +480,6 @@ export function DashboardView() {
                   className="text-destructive cursor-pointer" 
                   data-testid="logout-button"
                 >
-                  <LogoutIcon size={18} className="mr-2" />
                   {t.dashboard.logout}
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -511,7 +488,7 @@ export function DashboardView() {
         </div>
       </header>
       
-      <main data-testid="dashboard-main-content" className="container mx-auto px-4 py-6">
+      <main data-testid="dashboard-main-content" className="relative z-10 container mx-auto px-4 py-6">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <div className="overflow-x-auto pb-2 -mb-2">
             <TabsList 

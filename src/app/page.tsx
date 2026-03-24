@@ -1,9 +1,8 @@
 'use client';
 
-import { useEffect, useState, useCallback, memo } from 'react';
+import { useState, useCallback, useEffect, memo } from 'react';
 import { useAuthStore } from '@/stores/auth-store';
-import { useLanguageStore } from '@/stores/language-store';
-import { translations } from '@/locales/translations';
+import { useTranslation } from '@/hooks/use-translation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -11,31 +10,11 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Eye, EyeOff, AlertCircle } from 'lucide-react';
-import dynamic from 'next/dynamic';
-import { ThemeToggle } from '@/components/theme/theme-toggle';
-import { LanguageToggle } from '@/components/language/language-toggle';
-import { UserIcon } from '@/components/icons/custom-icons';
-import { Skeleton } from '@/components/ui/skeleton';
-
-const DashboardView = dynamic(
-  () => import('@/components/dashboard/dashboard-view').then(mod => ({ default: mod.DashboardView })),
-  { 
-    ssr: false,
-    loading: () => (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="space-y-4 text-center">
-          <div className="h-12 w-12 rounded-full border-4 border-primary border-t-transparent animate-spin mx-auto" />
-          <p className="text-muted-foreground animate-pulse">Loading...</p>
-        </div>
-      </div>
-    )
-  }
-);
+import { DashboardView } from '@/components/dashboard/dashboard-view';
 
 const LoginPage = memo(function LoginPage() {
   const { isAuthenticated, login, setLoading, isLoading } = useAuthStore();
-  const { language } = useLanguageStore();
-  const t = translations[language];
+  const { t } = useTranslation();
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -90,17 +69,21 @@ const LoginPage = memo(function LoginPage() {
 
   if (isPageLoading) {
     return (
-      <div data-testid="login-loading-state" className="min-h-screen bg-background flex items-center justify-center p-4">
+      <div 
+        data-testid="login-loading-state" 
+        className="min-h-screen flex items-center justify-center p-4"
+        style={{ background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0F172A 100%)' }}
+      >
         <div className="w-full max-w-md space-y-4">
           <div className="flex justify-center">
-            <Skeleton className="h-16 w-48 rounded-xl" />
+            <div className="h-16 w-48 rounded-xl bg-slate-700/50 animate-pulse" />
           </div>
-          <Skeleton className="h-8 w-32 mx-auto" />
-          <Skeleton className="h-4 w-48 mx-auto" />
+          <div className="h-8 w-32 mx-auto bg-slate-700/50 animate-pulse rounded-md" />
+          <div className="h-4 w-48 mx-auto bg-slate-700/50 animate-pulse rounded-md" />
           <div className="space-y-3 pt-4">
-            <Skeleton className="h-12 w-full rounded-xl" />
-            <Skeleton className="h-12 w-full rounded-xl" />
-            <Skeleton className="h-12 w-full rounded-xl" />
+            <div className="h-12 w-full bg-slate-700/50 animate-pulse rounded-xl" />
+            <div className="h-12 w-full bg-slate-700/50 animate-pulse rounded-xl" />
+            <div className="h-12 w-full bg-slate-700/50 animate-pulse rounded-xl" />
           </div>
         </div>
       </div>
@@ -108,29 +91,25 @@ const LoginPage = memo(function LoginPage() {
   }
 
   return (
-    <div data-testid="login-page" className="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden">
-      <div className="absolute top-20 left-10 w-64 h-64 rounded-full bg-primary/5 blur-3xl" />
-      <div className="absolute bottom-20 right-10 w-96 h-96 rounded-full bg-amber-400/5 blur-3xl" />
-      <div className="absolute top-1/3 right-1/4 w-32 h-32 rounded-full bg-emerald-400/5 blur-2xl" />
+    <div data-testid="login-page" className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Subtle grid pattern overlay */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:32px_32px]" />
       
-      <div data-testid="login-header-actions" className="absolute top-4 right-4 flex items-center gap-2">
-        <LanguageToggle />
-        <ThemeToggle />
-      </div>
+
 
       <div className="w-full max-w-md relative z-10 animate-page-enter">
         <Card data-testid="login-card" className="fun-card">
-          <CardHeader className="space-y-1 text-center pb-2 pt-6">
+          <CardHeader className="space-y-2 text-center pb-4 pt-8">
             <CardTitle data-testid="login-title" className="text-3xl font-bold">
               <span className="gradient-text">Oupweb</span>
             </CardTitle>
-            <CardDescription data-testid="login-subtitle" className="text-base pt-1">
+            <CardDescription data-testid="login-subtitle" className="text-base pt-2">
               {t.login.subtitle}
             </CardDescription>
           </CardHeader>
           
           <form onSubmit={handleSubmit} data-testid="login-form">
-            <CardContent className="space-y-4 px-6">
+            <CardContent className="space-y-5 px-6 py-4">
               {error && (
                 <Alert 
                   variant="destructive" 
@@ -200,10 +179,10 @@ const LoginPage = memo(function LoginPage() {
 
             </CardContent>
             
-            <CardFooter className="flex flex-col gap-4 px-6 pb-6">
+            <CardFooter className="flex flex-col gap-4 px-6 pt-2 pb-8">
               <Button
                 type="submit"
-                className="w-full h-12 fun-button rounded-xl text-base"
+                className="w-full h-12 fun-button rounded-xl text-base font-medium"
                 disabled={isLoading}
                 data-testid="login-submit-button"
                 data-loading={isLoading}
@@ -236,13 +215,12 @@ const LoginPage = memo(function LoginPage() {
                   key={demo.role}
                   variant="outline"
                   size="sm"
-                  className="flex flex-col h-auto py-3 gap-1 rounded-xl hover:border-primary/30 transition-colors"
+                  className="flex flex-col h-auto py-3 rounded-xl hover:border-primary/30 transition-colors"
                   onClick={() => fillDemoCredentials(demo.role, demo.email, demo.password)}
                   data-testid={demo.testid}
                   data-role={demo.role.toLowerCase()}
                   data-email={demo.email}
                 >
-                  <UserIcon size={20} />
                   <span className="font-bold text-sm">{demo.role}</span>
                 </Button>
               ))}
@@ -256,7 +234,7 @@ const LoginPage = memo(function LoginPage() {
 
 export default function Home() {
   const { isAuthenticated } = useAuthStore();
-  
+
   if (isAuthenticated) {
     return <DashboardView />;
   }

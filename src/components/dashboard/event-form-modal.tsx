@@ -22,8 +22,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Loader2 } from 'lucide-react';
-import { useLanguageStore } from '@/stores/language-store';
-import { translations } from '@/locales/translations';
+import { useTranslation } from '@/hooks/use-translation';
 import type { Event } from '@/types';
 
 interface EventFormModalProps {
@@ -82,8 +81,7 @@ export function EventFormModal({
   selectedDate,
   isLoading,
 }: EventFormModalProps) {
-  const { language } = useLanguageStore();
-  const t = translations[language];
+  const { t } = useTranslation();
   const tc = t.calendar;
 
   const [formData, setFormData] = useState(() => getInitialFormData(event, selectedDate));

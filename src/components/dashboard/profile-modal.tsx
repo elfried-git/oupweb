@@ -14,16 +14,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Loader2, Camera, User as UserIcon, Mail, Globe, Shield } from 'lucide-react';
-import { useLanguageStore } from '@/stores/language-store';
-import { translations } from '@/locales/translations';
+import { Loader2, Camera, User as UserIcon, Mail, Shield } from 'lucide-react';
+import { useTranslation } from '@/hooks/use-translation';
 import type { User } from '@/stores/auth-store';
 
 interface ProfileModalProps {
@@ -35,8 +27,7 @@ interface ProfileModalProps {
 }
 
 export function ProfileModal({ open, onClose, user, onUpdate, isLoading }: ProfileModalProps) {
-  const { language, setLanguage } = useLanguageStore();
-  const t = translations[language];
+  const { t } = useTranslation();
   
   const [formData, setFormData] = useState({
     name: user.name,
@@ -179,30 +170,6 @@ export function ProfileModal({ open, onClose, user, onUpdate, isLoading }: Profi
               </div>
 
               <Separator />
-
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label className="text-right flex items-center gap-2">
-                  <Globe className="h-4 w-4" />
-                  {t.profile.language}
-                </Label>
-                <Select value={language} onValueChange={(v) => setLanguage(v as 'fr' | 'en')}>
-                  <SelectTrigger className="col-span-3" data-testid="profile-language-select">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="fr">
-                      <span className="flex items-center gap-2">
-                        <span>🇫🇷</span> {t.profile.french}
-                      </span>
-                    </SelectItem>
-                    <SelectItem value="en">
-                      <span className="flex items-center gap-2">
-                        <span>🇬🇧</span> {t.profile.english}
-                      </span>
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
 
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label className="text-right flex items-center gap-2">

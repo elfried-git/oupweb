@@ -20,8 +20,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Loader2 } from 'lucide-react';
-import { useLanguageStore } from '@/stores/language-store';
-import { translations } from '@/locales/translations';
+import { useTranslation } from '@/hooks/use-translation';
 import type { User } from '@/stores/auth-store';
 
 interface UserFormModalProps {
@@ -47,8 +46,7 @@ export function UserFormModal({
   user,
   isLoading 
 }: UserFormModalProps) {
-  const { language } = useLanguageStore();
-  const t = translations[language];
+  const { t } = useTranslation();
   
   const [formData, setFormData] = useState(getInitialFormData(user));
 

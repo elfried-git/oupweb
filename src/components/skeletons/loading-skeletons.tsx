@@ -3,9 +3,11 @@
 import { memo } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 
+const cardStyle = { backgroundColor: 'rgba(30, 41, 59, 0.5)' };
+
 export const StatsCardSkeleton = memo(function StatsCardSkeleton() {
   return (
-    <div className="rounded-xl border bg-card/50 p-4">
+    <div className="rounded-xl border p-4" style={cardStyle}>
       <div className="flex items-center justify-between pb-2">
         <Skeleton className="h-4 w-20" />
         <Skeleton className="h-10 w-10 rounded-xl" />
@@ -20,7 +22,7 @@ export const StatsCardSkeleton = memo(function StatsCardSkeleton() {
 
 export const ProductsTableSkeleton = memo(function ProductsTableSkeleton() {
   return (
-    <div className="rounded-xl border bg-card/50 p-4">
+    <div className="rounded-xl border p-4" style={cardStyle}>
       <div className="flex items-center justify-between mb-4">
         <Skeleton className="h-8 w-32" />
         <Skeleton className="h-9 w-32" />
@@ -31,7 +33,7 @@ export const ProductsTableSkeleton = memo(function ProductsTableSkeleton() {
       </div>
       <div className="space-y-3">
         {[...Array(5)].map((_, i) => (
-          <div key={i} className="flex items-center gap-4 p-3 rounded-lg bg-background/50">
+          <div key={i} className="flex items-center gap-4 p-3 rounded-lg" style={{ backgroundColor: 'rgba(15, 23, 42, 0.5)' }}>
             <Skeleton className="h-4 w-40" />
             <Skeleton className="h-4 w-20" />
             <Skeleton className="h-6 w-16 rounded-full" />
@@ -46,7 +48,7 @@ export const ProductsTableSkeleton = memo(function ProductsTableSkeleton() {
 
 export const TasksListSkeleton = memo(function TasksListSkeleton() {
   return (
-    <div className="rounded-xl border bg-card/50 p-4">
+    <div className="rounded-xl border p-4" style={cardStyle}>
       <div className="flex items-center justify-between mb-4">
         <Skeleton className="h-6 w-24" />
         <Skeleton className="h-9 w-28" />
@@ -55,7 +57,7 @@ export const TasksListSkeleton = memo(function TasksListSkeleton() {
       <Skeleton className="h-9 w-36 mb-4" />
       <div className="space-y-3">
         {[...Array(4)].map((_, i) => (
-          <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-background/50">
+          <div key={i} className="flex items-start gap-3 p-3 rounded-lg" style={{ backgroundColor: 'rgba(15, 23, 42, 0.5)' }}>
             <Skeleton className="h-5 w-5 rounded" />
             <div className="flex-1">
               <Skeleton className="h-4 w-40 mb-2" />
@@ -71,14 +73,14 @@ export const TasksListSkeleton = memo(function TasksListSkeleton() {
 
 export const NotificationsSkeleton = memo(function NotificationsSkeleton() {
   return (
-    <div className="rounded-xl border bg-card/50 p-4">
+    <div className="rounded-xl border p-4" style={cardStyle}>
       <div className="flex items-center justify-between mb-4">
         <Skeleton className="h-6 w-28" />
         <Skeleton className="h-8 w-20" />
       </div>
       <div className="space-y-3">
         {[...Array(3)].map((_, i) => (
-          <div key={i} className="p-3 rounded-lg bg-background/50">
+          <div key={i} className="p-3 rounded-lg" style={{ backgroundColor: 'rgba(15, 23, 42, 0.5)' }}>
             <div className="flex gap-3">
               <Skeleton className="h-5 w-5 rounded-full" />
               <div className="flex-1">
@@ -95,7 +97,7 @@ export const NotificationsSkeleton = memo(function NotificationsSkeleton() {
 
 export const ChartsSkeleton = memo(function ChartsSkeleton() {
   return (
-    <div className="rounded-xl border bg-card/50 p-4">
+    <div className="rounded-xl border p-4" style={cardStyle}>
       <Skeleton className="h-6 w-24 mb-4" />
       <div className="space-y-4">
         <div>
@@ -131,7 +133,7 @@ export const DashboardSkeleton = memo(function DashboardSkeleton() {
       
       {/* Quick Actions & Charts */}
       <div className="grid gap-6 lg:grid-cols-3">
-        <div className="rounded-xl border bg-card/50 p-4">
+        <div className="rounded-xl border p-4" style={cardStyle}>
           <Skeleton className="h-6 w-28 mb-4" />
           <div className="grid grid-cols-2 gap-3">
             {[...Array(4)].map((_, i) => (
@@ -149,7 +151,7 @@ export const DashboardSkeleton = memo(function DashboardSkeleton() {
         <TasksListSkeleton />
         <div className="space-y-6">
           <NotificationsSkeleton />
-          <div className="rounded-xl border bg-card/50 p-4">
+          <div className="rounded-xl border p-4" style={cardStyle}>
             <Skeleton className="h-6 w-28 mb-4" />
             <div className="space-y-3">
               {[...Array(3)].map((_, i) => (

@@ -15,8 +15,8 @@ import {
 } from '@/components/ui/select';
 import { Calendar } from 'lucide-react';
 import { TaskIcon } from '@/components/icons/custom-icons';
-import { useLanguageStore } from '@/stores/language-store';
-import { translations, translateTask } from '@/locales/translations';
+import { useTranslation } from '@/hooks/use-translation';
+import { translateTask } from '@/locales/translations';
 import type { Task } from '@/types';
 
 interface TasksListProps {
@@ -31,8 +31,7 @@ export const TasksList = memo(function TasksList({
   onStatusChange, 
   onAdd 
 }: TasksListProps) {
-  const { language } = useLanguageStore();
-  const t = translations[language];
+  const { t } = useTranslation();
   
   const [filter, setFilter] = useState<string>('all');
 
@@ -89,8 +88,8 @@ export const TasksList = memo(function TasksList({
   }, [onStatusChange]);
 
   const getTranslatedTask = useCallback((task: Task) => {
-    return translateTask(task, language);
-  }, [language]);
+    return translateTask(task);
+  }, []);
 
   return (
     <Card 
@@ -260,7 +259,7 @@ export const TasksList = memo(function TasksList({
                     onValueChange={(value) => handleStatusChange(task.id, value)}
                   >
                     <SelectTrigger 
-                      className="w-[100px] h-7 text-xs opacity-0 group-hover:opacity-100 transition-opacity rounded-lg" 
+                      className="w-[100px] h-7 text-xs rounded-lg" 
                       data-testid={`task-status-select-${task.id}`}
                       data-task-id={task.id}
                       aria-label={`Change status for ${translatedTask.title}`}

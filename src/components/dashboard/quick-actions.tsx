@@ -10,8 +10,7 @@ import {
   ReportIcon,
   SparkleIcon
 } from '@/components/icons/custom-icons';
-import { useLanguageStore } from '@/stores/language-store';
-import { translations } from '@/locales/translations';
+import { useTranslation } from '@/hooks/use-translation';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
 
@@ -21,8 +20,7 @@ interface QuickActionsProps {
 }
 
 export const QuickActions = memo(function QuickActions({ onAddProduct, onAddTask }: QuickActionsProps) {
-  const { language } = useLanguageStore();
-  const t = translations[language];
+  const { t } = useTranslation();
   const [isExporting, setIsExporting] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -63,7 +61,7 @@ export const QuickActions = memo(function QuickActions({ onAddProduct, onAddTask
   const handleGenerateReport = useCallback(async () => {
     setIsGenerating(true);
     try {
-      const response = await fetch(`/api/report?lang=${language}`);
+      const response = await fetch('/api/report?lang=fr');
       
       if (!response.ok) {
         throw new Error('Failed to generate report');
@@ -85,7 +83,7 @@ export const QuickActions = memo(function QuickActions({ onAddProduct, onAddTask
     } finally {
       setIsGenerating(false);
     }
-  }, [language, t.toast]);
+  }, [t.toast]);
 
   const actions = [
     {

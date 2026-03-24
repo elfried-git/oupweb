@@ -22,8 +22,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Loader2 } from 'lucide-react';
-import { useLanguageStore } from '@/stores/language-store';
-import { translations } from '@/locales/translations';
+import { useTranslation } from '@/hooks/use-translation';
 import type { Product } from '@/types';
 
 interface ProductFormModalProps {
@@ -47,6 +46,14 @@ const getInitialFormData = (product?: Product | null) => ({
   isActive: product?.isActive ?? true,
 });
 
+// Style commun pour tous les inputs
+const inputStyle = { 
+  backgroundColor: '#334155', 
+  color: '#F8FAFC', 
+  borderColor: '#475569',
+  opacity: 1 
+};
+
 export function ProductFormModal({ 
   open, 
   onClose, 
@@ -54,8 +61,7 @@ export function ProductFormModal({
   product,
   isLoading 
 }: ProductFormModalProps) {
-  const { language } = useLanguageStore();
-  const t = translations[language];
+  const { t } = useTranslation();
   
   const [formData, setFormData] = useState(() => getInitialFormData(product));
 
@@ -104,6 +110,7 @@ export function ProductFormModal({
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 className="col-span-3"
+                style={inputStyle}
                 required
                 data-testid="product-name-input"
               />
@@ -118,6 +125,7 @@ export function ProductFormModal({
                 value={formData.sku}
                 onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
                 className="col-span-3"
+                style={inputStyle}
                 required
                 data-testid="product-sku-input"
               />
@@ -131,7 +139,11 @@ export function ProductFormModal({
                 value={formData.category}
                 onValueChange={(value) => setFormData({ ...formData, category: value })}
               >
-                <SelectTrigger className="col-span-3" data-testid="product-category-select">
+                <SelectTrigger 
+                  className="col-span-3" 
+                  data-testid="product-category-select"
+                  style={inputStyle}
+                >
                   <SelectValue placeholder={t.product.category} />
                 </SelectTrigger>
                 <SelectContent>
@@ -156,6 +168,7 @@ export function ProductFormModal({
                 value={formData.price}
                 onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                 className="col-span-3"
+                style={inputStyle}
                 required
                 data-testid="product-price-input"
               />
@@ -172,6 +185,7 @@ export function ProductFormModal({
                 value={formData.stock}
                 onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
                 className="col-span-3"
+                style={inputStyle}
                 required
                 data-testid="product-stock-input"
               />
@@ -186,6 +200,7 @@ export function ProductFormModal({
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 className="col-span-3"
+                style={inputStyle}
                 rows={3}
                 data-testid="product-description-input"
               />
@@ -201,6 +216,7 @@ export function ProductFormModal({
                 value={formData.imageUrl}
                 onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
                 className="col-span-3"
+                style={inputStyle}
                 data-testid="product-image-input"
               />
             </div>
@@ -236,7 +252,7 @@ export function ProductFormModal({
             <Button 
               type="submit"
               disabled={isLoading}
-              className="bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700"
+              className="fun-button"
               data-testid="submit-product-button"
             >
               {isLoading ? (
